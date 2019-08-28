@@ -1,0 +1,84 @@
+$(document).ready(function () {
+
+	// get window size
+
+	var height = $(document).height();
+	var winHeight = $(window).height();
+	
+	var width = $(document).width();
+	var winWidth = $(window).width();
+
+	// add random class to page
+	var classes = ['blue', 'red', 'green'];
+	var color = classes[~~(Math.random()*classes.length)];
+	$('body').addClass(color);
+
+	//
+	$('#toggle').click(function(){
+		$('body').toggleClass(color);
+		$(this).toggleClass(color);		
+	});
+
+	// do this on mobile
+	
+	if(winWidth > 736){
+		// load images 
+		var jsonURL = "work.json";	
+		$.getJSON(jsonURL, function (json)
+		{
+
+			// make random numbers within range of json file
+			var uniqueRandoms = [];
+			var numRandoms = json.projects.length;
+			
+			function makeUniqueRandom() {
+			    // refill the array if needed
+			    if (!uniqueRandoms.length) {
+			        for (var i = 0; i < numRandoms; i++) {
+			            uniqueRandoms.push(i);
+			        }
+			    }
+			    var index = Math.floor(Math.random() * uniqueRandoms.length);
+			    var val = uniqueRandoms[index];
+
+			    // now remove that value from the array
+			    uniqueRandoms.splice(index, 1);
+
+			    return val;
+
+			}
+
+			// add content to this var
+			var imgList= "";
+
+			//loop through json
+			for (var i = 0; i < 3; i++) {
+				var rand = makeUniqueRandom();
+				var randPosX = Math.floor((Math.random()*winWidth));
+				var randPosY = Math.floor((Math.random()*winHeight));
+						
+				imgList += '<div class="filtered" style="'
+				// place images randomly
+				imgList += 'left: '+(randPosX - 125)+'px; ';
+				imgList += 'top: '+(randPosY - 125)+'px; ';
+				imgList += '"><img src="img/' + json.projects[rand].imgPath + '">';
+				imgList += '<div class="name">'+json.projects[rand].name+'</div>';
+				imgList += '</div>';
+	    	}
+
+			$('#images').append(imgList);
+			
+			// drag and drop 
+			$('.filtered').draggable();
+
+			$( ".filtered" ).mousedown(function() {
+			$(this).addClass('active');
+			});
+
+			$( ".filtered" ).mouseup(function() {
+			$(this).removeClass('active');
+			});	  		
+
+		});	    
+	}
+});
