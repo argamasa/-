@@ -63,6 +63,30 @@ h1 {
   max-width: 420px;
 }
 
+#bio {
+  position: relative;
+  z-index: 10;
+  margin: 40px;
+  font-size: 12px;
+  max-width: 420px;
+  display: none;
+  background: white;
+  }
+
+#info:hover #bio {
+  display: block;
+}
+
+#contacto {
+  position: relative;
+  z-index: 10;
+  margin: 40px;
+  max-width: 420px;
+  font-size: 16px;
+}
+
+
+
 #images {
   position: absolute;
   top: 0px;
